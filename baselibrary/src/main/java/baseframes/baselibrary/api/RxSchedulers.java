@@ -1,5 +1,8 @@
 package baseframes.baselibrary.api;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
@@ -13,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class RxSchedulers {
-    public static <T> ObservableTransformer<T, T> compose() {
+    public static <T> ObservableTransformer<T, T> compose(final Context context) {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> observable) {
@@ -22,7 +25,9 @@ public class RxSchedulers {
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
-
+                                if(!NetUtils.isNetworkConnected(context)){
+                                    Toast.makeText(context,"网络异常",Toast.LENGTH_SHORT).show();
+                                }
                             }
                         })
                         .observeOn(AndroidSchedulers.mainThread());

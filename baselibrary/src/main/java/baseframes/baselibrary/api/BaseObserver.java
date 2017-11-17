@@ -1,5 +1,6 @@
 package baseframes.baselibrary.api;
 
+import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -55,7 +56,11 @@ public abstract class BaseObserver<T> implements Observer<BaseBean<T>> {
         if(progressDialog!=null){
             progressDialog.dismiss();
         }
-        Toast.makeText(mContext, "网络异常，请稍后再试", Toast.LENGTH_LONG).show();
+        System.out.println("==================error"+e.getMessage());
+        if(e instanceof NetworkErrorException){
+            Toast.makeText(mContext, "网络异常，请稍后再试", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     @Override

@@ -1,5 +1,7 @@
 package baseframes.baselibrary.api;
 
+import android.content.Context;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,10 +22,19 @@ public class HttpManager {
     private static final int DEFAULT_TIMEOUT = 5;
     private Retrofit retrofit;
     private ApiRequest request;
-    private static class SingletonHolder{
-        private static final HttpManager INSTANCE = new HttpManager();
+    private Context mContext;
+    private static class SingleHolder{
+        private static  HttpManager httpManager=null;
+        public static HttpManager getInstance(Context context){
+            if(httpManager==null){
+                httpManager=new HttpManager(context);
+            }
+            return httpManager;
+        }
     }
-    private HttpManager(){
+
+    private HttpManager(Context context){
+        this.mContext=context;
         retrofit=new Retrofit.Builder()
                 .client(initOkhttpClien().build())
                 .baseUrl(baseUrl)
@@ -34,10 +45,9 @@ public class HttpManager {
         request = retrofit.create(ApiRequest.class);
     }
 
-    public  static HttpManager init(){
-        return SingletonHolder.INSTANCE;
+    public static HttpManager init(Context context){
+        return SingleHolder.getInstance(context);
     }
-
     /**
      * 创建okhttp的构建
      * @return
@@ -45,10 +55,12 @@ public class HttpManager {
     private OkHttpClient.Builder initOkhttpClien(){
         OkHttpClient.Builder httpclient=new OkHttpClient().newBuilder();
         httpclient.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+        //添加 token 过期拦截
+        httpclient.addInterceptor(new TokenInterceptor(mContext));
         return httpclient;
     }
     public void getMovie(int strat, int count, BaseObserver<List<Subject>> subscriber){
-        request.getMovie(2,20).compose(new BaseObservableTransFormer<BaseBean<List<Subject>>>()).subscribe( subscriber);
+        request.getMovie(2,20).compose(RxSchedulers.<BaseBean<List<Subject>>>compose(mContext)).subscribe( subscriber);
     }
 
 }

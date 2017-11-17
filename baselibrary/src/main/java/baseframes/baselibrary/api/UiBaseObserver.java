@@ -17,7 +17,7 @@ public class UiBaseObserver<T> extends BaseObserver<T> {
 
     @Override
     protected void onHandleSuccess(T t) {
-//测试提交
+    //测试提交
 
     }
 }
