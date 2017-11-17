@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).subscribe(consumer);
 
-        HttpManager.init(this).getMovie(1, 50, new BaseObserver<List<Subject>>(this) {
+        HttpManager.init().getMovie(1, 50, new BaseObserver<List<Subject>>(this) {
             @Override
             protected void onHandleSuccess(List<Subject> subjects) {
                 System.out.println(subjects.get(2).toString());

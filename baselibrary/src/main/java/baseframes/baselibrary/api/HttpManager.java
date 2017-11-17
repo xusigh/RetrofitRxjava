@@ -25,16 +25,15 @@ public class HttpManager {
     private Context mContext;
     private static class SingleHolder{
         private static  HttpManager httpManager=null;
-        public static HttpManager getInstance(Context context){
+        public static HttpManager getInstance(){
             if(httpManager==null){
-                httpManager=new HttpManager(context);
+                httpManager=new HttpManager();
             }
             return httpManager;
         }
     }
 
-    private HttpManager(Context context){
-        this.mContext=context;
+    private HttpManager(){
         retrofit=new Retrofit.Builder()
                 .client(initOkhttpClien().build())
                 .baseUrl(baseUrl)
@@ -45,8 +44,8 @@ public class HttpManager {
         request = retrofit.create(ApiRequest.class);
     }
 
-    public static HttpManager init(Context context){
-        return SingleHolder.getInstance(context);
+    public static HttpManager init(){
+        return SingleHolder.getInstance();
     }
     /**
      * 创建okhttp的构建
@@ -56,7 +55,7 @@ public class HttpManager {
         OkHttpClient.Builder httpclient=new OkHttpClient().newBuilder();
         httpclient.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         //添加 token 过期拦截
-        httpclient.addInterceptor(new TokenInterceptor(mContext));
+        httpclient.addInterceptor(new TokenInterceptor());
         return httpclient;
     }
     public void getMovie(int strat, int count, BaseObserver<List<Subject>> subscriber){

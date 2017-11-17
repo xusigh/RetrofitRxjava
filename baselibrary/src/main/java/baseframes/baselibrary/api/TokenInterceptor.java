@@ -1,11 +1,8 @@
 package baseframes.baselibrary.api;
 
-import android.content.Context;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -16,16 +13,12 @@ import okhttp3.Response;
  */
 
 public class TokenInterceptor implements Interceptor {
-    private Context context;
-    public TokenInterceptor(Context context){
-        this.context=context;
-    }
     private static final Charset UTF8 = Charset.forName("UTF-8");
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
 
-        //判断网络
+       /* //判断网络
         if(!NetUtils.isNetworkConnected(context)){
             //在请求头中加入：强制使用缓存，不访问网络
             // 无网络时，在响应头中加入：设置超时为4周
@@ -43,17 +36,16 @@ public class TokenInterceptor implements Interceptor {
             response.newBuilder()
                     .header("Cache-Control", "public, max-age=" + maxAge)
                     .build();
-        }
+        }*/
 
-/*
         // try the request
         Response originalResponse = chain.proceed(request);
 
-        *//**通过如下的办法曲线取到请求完成的数据
+  /*      *通过如下的办法曲线取到请求完成的数据
          * 原本想通过  originalResponse.body().string()
          * 去取到请求完成的数据,但是一直报错,不知道是okhttp的bug还是操作不当
          * 然后去看了okhttp的源码,找到了这个曲线方法,取到请求完成的数据后,根据特定的判断条件去判断token过期
-         *//*
+
         ResponseBody responseBody = originalResponse.body();
         BufferedSource source = responseBody.source();
         source.request(Long.MAX_VALUE); // Buffer the entire body.
@@ -64,11 +56,11 @@ public class TokenInterceptor implements Interceptor {
             charset = contentType.charset(UTF8);
         }
         String bodyString = buffer.clone().readString(charset);
-        System.out.println(bodyString);*/
+        System.out.println(bodyString);
 
-        /***************************************/
-
-       /* if (response shows expired token){//根据和服务端的约定判断token过期
+        **************************************/
+/*
+        if (response shows expired token){//根据和服务端的约定判断token过期
 
             //取出本地的refreshToken
             String refreshToken = "sssgr122222222";
@@ -92,6 +84,6 @@ public class TokenInterceptor implements Interceptor {
         }*/
 
         // otherwise just pass the original response on
-        return response;
+        return originalResponse;
     }
 }
