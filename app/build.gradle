@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+apply plugin:'me.tatarka.retrolambda'//
+android {
+    compileSdkVersion 26
+    buildToolsVersion "27.0.1"
+    defaultConfig {
+        applicationId "baseframes.base"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+
+        exclude'META-INF/services/javax.annotation.processing.Processor'
+
+    }
+
+// 使用Java1.8
+
+    compileOptions {
+
+        sourceCompatibility JavaVersion.VERSION_1_8
+
+        targetCompatibility JavaVersion.VERSION_1_8
+
+    }
+
+
+
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+    apply plugin: 'android-apt'
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile 'com.jakewharton:butterknife:8.1.0'
+    //    apply plugin: 'android-apt'
+    //    apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    //    compile 'com.jakewharton:butterknife:8.1.0'
+    //    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+    //    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //    compile 'io.reactivex:rxjava:1.0.14'
+    //    compile 'io.reactivex:rxandroid:1.0.1'
+    compile project(':baselibrary')
+}
