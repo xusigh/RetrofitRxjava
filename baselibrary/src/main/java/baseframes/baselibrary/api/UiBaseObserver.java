@@ -18,5 +18,6 @@ public class UiBaseObserver<T> extends BaseObserver<T> {
     @Override
     protected void onHandleSuccess(T t) {
 
+
     }
 }
