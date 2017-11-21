@@ -1,6 +1,5 @@
 package baseframes.baselibrary.api;
 
-import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,16 +11,19 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * Created by zhanghs on 2017/11/17/017.
+ * 对返回值的封装，以及对请求效果的封装
  */
-
 public abstract class BaseObserver<T> implements Observer<BaseBean<T>> {
-    private static final String TAG = "BaseObserver";
     private Context mContext;
     private ProgressDialog progressDialog;
     private Disposable disposable;
+
+    //默认无效果的请求
     protected BaseObserver(Context context){
         this.mContext=context.getApplicationContext();
     }
+
+    //带进度条的请求
     protected BaseObserver(Context context,boolean showProgress){
         this.mContext=context.getApplicationContext();
         if(showProgress){
@@ -34,6 +36,7 @@ public abstract class BaseObserver<T> implements Observer<BaseBean<T>> {
             });
         }
     }
+
     @Override
     public void onSubscribe(Disposable d) {
         disposable=d;
@@ -44,7 +47,7 @@ public abstract class BaseObserver<T> implements Observer<BaseBean<T>> {
         //这里对数据bean的封装
         if (value.getTotal()>0) {
             T t = value.getSubject();
-            onHandleSuccess((T )t);
+            onHandleSuccess(t);
         } else {
             onHandleError(value.getTitle());
         }
@@ -56,11 +59,6 @@ public abstract class BaseObserver<T> implements Observer<BaseBean<T>> {
         if(progressDialog!=null){
             progressDialog.dismiss();
         }
-        System.out.println("==================error"+e.getMessage());
-        if(e instanceof NetworkErrorException){
-            Toast.makeText(mContext, "网络异常，请稍后再试", Toast.LENGTH_LONG).show();
-        }
-
     }
 
     @Override
@@ -69,6 +67,7 @@ public abstract class BaseObserver<T> implements Observer<BaseBean<T>> {
             progressDialog.dismiss();
         }
     }
+
     protected abstract void onHandleSuccess(T t);
 
     protected void onHandleError(String msg) {

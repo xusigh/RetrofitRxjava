@@ -29,6 +29,18 @@ android {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
 //    }
+    //debug 版本的设置
+    productFlavors {
+        create('all') {
+        }
+    }
+    publishNonDefault true
+
+}
+//debug 版本的设置
+configurations {
+    allDebug
+    allRelease
 }
 
 dependencies {
@@ -36,39 +48,46 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
     testCompile 'junit:junit:4.12'
 
     apply plugin: 'android-apt'
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
     compile 'com.jakewharton:butterknife:8.1.0'
 
-
-
 //    compile 'com.squareup.retrofit2:retrofit:2.1.0'
 //    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
 
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
-
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
-
-
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
 //    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
 //    compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 
 
 //    compile 'com.squareup.retrofit2:retrofit:2.3.0'
 //    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
 
+    compile 'com.orhanobut:logger:2.1.0' // 打印日志
+//    compile 'com.squareup.okhttp3:logging-interceptor:3.1.2'//也是打印日志 ok的拦截器
 
 
     //请求字符串
     compile 'com.squareup.retrofit2:converter-scalars:2.0.0'
+    //布局适配
+    compile 'com.zhy:autolayout:1.4.5'
+    //事件总线
+    compile 'org.greenrobot:eventbus:3.0.0'
+    //沉浸式状态栏
+    compile 'com.jaeger.statusbarutil:library:1.4.0'
+    //crash 框架
+//    compile 'com.zxy.android:recovery:0.0.8'
+
 }

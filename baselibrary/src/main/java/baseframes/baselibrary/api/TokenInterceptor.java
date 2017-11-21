@@ -1,45 +1,74 @@
 package baseframes.baselibrary.api;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+import java.util.concurrent.TimeUnit;
 
+import baseframes.baselibrary.BuildConfig;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.Buffer;
+import okio.BufferedSource;
 
 /**
  * Created by zhanghs on 2017/11/17/017.
  * token拦截器
+ * 拦截器，打印参数以及返回值，还可以设置token刷新
  */
-
 public class TokenInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-
-       /* //判断网络
-        if(!NetUtils.isNetworkConnected(context)){
-            //在请求头中加入：强制使用缓存，不访问网络
-            // 无网络时，在响应头中加入：设置超时为4周
-            int maxStale = 60 * 60 * 24 * 28;
-            request = request.newBuilder()
-                    .cacheControl(CacheControl.FORCE_CACHE)
-                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                    .build();
+        String body=null;
+        if(BuildConfig.DEBUG) {
+            RequestBody requestBody = request.body();
+            if (requestBody != null) {
+                Buffer buffer = new Buffer();
+                requestBody.writeTo(buffer);
+                Charset charset = UTF8;
+                MediaType contentType = requestBody.contentType();
+                if (contentType != null) {
+                    charset = contentType.charset(UTF8);
+                }
+                body = buffer.readString(charset);
+            }
+            Logger.e("发送的请求\nmethod：%s\\nurl：%s\\nheaders: %sbody：%s", request.method(), request.url(), request.headers(), body);
         }
-        Response response = chain.proceed(request);
+        long startNs=System.nanoTime();
+        Response response=chain.proceed(request);
+        long tookMs= TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-startNs);
+        ResponseBody responseBody=response.body();
+        if(BuildConfig.DEBUG) {
+            String rBody = null;
+            if (responseBody != null) {
+                BufferedSource source = responseBody.source();
+                source.request(Long.MAX_VALUE); // Buffer the entire body.
+                Buffer buffer = source.buffer();
 
-        if(NetUtils.isNetworkConnected(context)){
-            int maxAge = 0;
-            // 有网络时 在响应头中加入：设置缓存超时时间0个小时
-            response.newBuilder()
-                    .header("Cache-Control", "public, max-age=" + maxAge)
-                    .build();
-        }*/
+                Charset charset = UTF8;
+                MediaType contentType = responseBody.contentType();
+                if (contentType != null) {
+                    try {
+                        charset = contentType.charset(UTF8);
+                    } catch (UnsupportedCharsetException e) {
+                        e.printStackTrace();
+                    }
+                }
+                rBody = buffer.clone().readString(charset);
 
-        // try the request
-        Response originalResponse = chain.proceed(request);
+            }
+            Logger.e("收到响应 %s%s %ss\n请求url：%s\n请求body：%s\n响应body：%s",
+                    response.code(), response.message(), tookMs, response.request().url(), body, rBody);
+        }
+        return response;
 
   /*      *通过如下的办法曲线取到请求完成的数据
          * 原本想通过  originalResponse.body().string()
@@ -82,8 +111,5 @@ public class TokenInterceptor implements Interceptor {
             originalResponse.body().close();
             return chain.proceed(newRequest);
         }*/
-
-        // otherwise just pass the original response on
-        return originalResponse;
     }
 }

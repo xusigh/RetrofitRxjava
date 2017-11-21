@@ -1,8 +1,14 @@
 package baseframes.base;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.orhanobut.logger.Logger;
 
 import org.reactivestreams.Publisher;
 
@@ -13,23 +19,52 @@ import baseframes.base.rxtext.Scort;
 import baseframes.base.rxtext.Student;
 import baseframes.baselibrary.api.BaseObserver;
 import baseframes.baselibrary.api.HttpManager;
+import baseframes.baselibrary.basebean.BaseBean;
 import baseframes.baselibrary.basebean.Subject;
+import baseframes.baselibrary.baseui.baseannotation.LayoutId;
+import baseframes.baselibrary.baseui.baseannotation.LeftText;
+import baseframes.baselibrary.baseui.baseannotation.RightText;
+import baseframes.baselibrary.baseui.baseannotation.TitleText;
+import baseframes.baselibrary.baseui.baseui.BaseActivity;
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Flowable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-
-public class MainActivity extends AppCompatActivity {
+@LayoutId(R.layout.activity_main)
+@TitleText("主页")
+@LeftText("返回")
+@RightText("你好啊")
+public class MainActivity extends BaseActivity<BaseBean>{
     @BindView(R.id.tv)
     TextView textView;
+    @BindView(R.id.make)
+    Button make;
+    @BindView(R.id.next)
+    Button next;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        textView.setOnClickListener( v-> System.out.println("sdaaaaaaaa"));
+        textView.setOnClickListener( v-> System.out.println(1/0));
         testRx();
+        baseHandler.sendEmptyMessage(0);
+        baseHandler.sendEmptyMessage(1);
+        baseHandler.sendEmptyMessage(2);
+
+    }
+
+
+
+    @OnClick({R.id.make,R.id.next})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.make:
+                System.out.println(1/0);
+                break;
+            case R.id.next:
+                startActivity(new Intent(this,TestActivity1.class));
+                break;
+        }
     }
     public void testRx(){
         List<Student> list=new ArrayList<>();
@@ -142,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };*/
+        Log.e("sadasd","sdfffffffffffffffffffffffffffff");
+        Logger.i("有问题啊");
         Consumer<Scort> consumer=new Consumer<Scort>() {
             @Override
             public void accept(Scort scort) throws Exception {
@@ -155,12 +192,36 @@ public class MainActivity extends AppCompatActivity {
                 return Flowable.fromIterable(student.getScorts());
             }
         }).subscribe(consumer);
-
-        HttpManager.init().getMovie(1, 50, new BaseObserver<List<Subject>>(this) {
+        HttpManager.init(this).getMovie(0, 10, new BaseObserver<List<Subject>>(this) {
             @Override
             protected void onHandleSuccess(List<Subject> subjects) {
                 System.out.println(subjects.get(2).toString());
             }
         });
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initEvent() {
+
+    }
+
+    @Override
+    public void handleMessageThis(Message msg, int what) {
+        switch (what){
+            case 0:
+                System.out.println("0000000+++++++++++++00000000000000000000000000");
+                break;
+            case 1:
+                System.out.println("111111111111111111111111111111111111111111111111111");
+                break;
+            case 2:
+                System.out.println("222222222222222222222222222222222222222");
+                break;
+        }
     }
 }

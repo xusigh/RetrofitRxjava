@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by zhanghs on 2017/11/17/017.
+ * 基础的返回值的bean
  */
 
 public class BaseBean<T> implements Serializable{

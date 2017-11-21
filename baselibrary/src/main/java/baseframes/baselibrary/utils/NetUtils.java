@@ -1,4 +1,4 @@
-package baseframes.baselibrary.api;
+package baseframes.baselibrary.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 /**
  * Created by zhanghs on 2017/11/17/017.
+ * 网络工具的类
  */
 
 public class NetUtils {

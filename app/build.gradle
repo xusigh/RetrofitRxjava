@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin:'me.tatarka.retrolambda'//
+apply plugin: 'me.tatarka.retrolambda'//
 android {
     compileSdkVersion 26
     buildToolsVersion "27.0.1"
@@ -13,13 +13,21 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            // 不显示Log, 在java代码中的调用方式为：BuildConfig.LOG_DEBUG 自定义字段
+//            buildConfigField "boolean", "LEO_DEBUG", "false"
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            // 显示Log
+//            buildConfigField "boolean", "LEO_DEBUG", "true"
+            versionNameSuffix "-debug"
+            minifyEnabled false
         }
     }
     packagingOptions {
 
-        exclude'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
 
     }
 
@@ -34,7 +42,6 @@ android {
     }
 
 
-
 }
 
 dependencies {
@@ -42,12 +49,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
     apply plugin: 'android-apt'
-    apt 'com.jakewharton:butterknife-compiler:8.1.0'
-    compile 'com.jakewharton:butterknife:8.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
     //    apply plugin: 'android-apt'
     //    apt 'com.jakewharton:butterknife-compiler:8.1.0'
     //    compile 'com.jakewharton:butterknife:8.1.0'
@@ -56,4 +60,15 @@ dependencies {
     //    compile 'io.reactivex:rxjava:1.0.14'
     //    compile 'io.reactivex:rxandroid:1.0.1'
     compile project(':baselibrary')
+
+    //依赖library
+    debugCompile project(path: ':baselibrary', configuration: 'allDebug')
+    releaseCompile project(path: ':baselibrary', configuration: 'allRelease')
+
+
+    compile 'com.android.support:appcompat-v7'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.jakewharton:butterknife:8.1.0'
+    testCompile 'junit:junit:4.12'
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
 }
