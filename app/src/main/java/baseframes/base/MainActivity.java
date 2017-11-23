@@ -3,12 +3,11 @@ package baseframes.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.orhanobut.logger.Logger;
 
 import org.reactivestreams.Publisher;
 
@@ -17,12 +16,14 @@ import java.util.List;
 
 import baseframes.base.rxtext.Scort;
 import baseframes.base.rxtext.Student;
+import baseframes.base.rxtext.TestBean;
 import baseframes.baselibrary.api.BaseObserver;
 import baseframes.baselibrary.api.HttpManager;
 import baseframes.baselibrary.basebean.BaseBean;
+import baseframes.baselibrary.basebean.BaseEventBean;
 import baseframes.baselibrary.basebean.Subject;
 import baseframes.baselibrary.baseui.baseannotation.LayoutId;
-import baseframes.baselibrary.baseui.baseannotation.LeftText;
+import baseframes.baselibrary.baseui.baseannotation.LeftImag;
 import baseframes.baselibrary.baseui.baseannotation.RightText;
 import baseframes.baselibrary.baseui.baseannotation.TitleText;
 import baseframes.baselibrary.baseui.baseui.BaseActivity;
@@ -33,7 +34,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 @LayoutId(R.layout.activity_main)
 @TitleText("主页")
-@LeftText("返回")
+@LeftImag(R.drawable.back_defaut)
 @RightText("你好啊")
 public class MainActivity extends BaseActivity<BaseBean>{
     @BindView(R.id.tv)
@@ -42,6 +43,8 @@ public class MainActivity extends BaseActivity<BaseBean>{
     Button make;
     @BindView(R.id.next)
     Button next;
+    @BindView(R.id.rv)
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +53,45 @@ public class MainActivity extends BaseActivity<BaseBean>{
         baseHandler.sendEmptyMessage(0);
         baseHandler.sendEmptyMessage(1);
         baseHandler.sendEmptyMessage(2);
-
+        testRv();
     }
 
+    private void testRv() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        TestAdapter testadapter=new TestAdapter(this);
+        List<TestBean> list=new ArrayList<>();
+        for (int i = 0; i <20 ; i++) {
+            TestBean t=new TestBean();
+            System.out.println("iiiiiiiiiiiiiiiiiiiiiii           "+i%2);
+            t.setType(i%2);
+            t.setName("name"+i);
+            t.setContent("content"+i);
+            list.add(t);
+        }
+        testadapter.addAll(list);
+        recyclerView.setAdapter(testadapter);
+        /*EasyRecyclerAdapter<TestBean> adapter=new EasyRecyclerAdapter<TestBean>(this,R.layout.item1_layout) {
+            @Override
+            public void onBind(BaseViewHolder holder, int position) {
+                TextView Item2tv1=holder.get(R.id.tv_1);
+                if(get(position).getName()!=null){
+                    Item2tv1.setText(get(position).getName());
+                }
+                TextView Item2tv2=holder.get(R.id.tv_2);
+                if(get(position).getContent()!=null){
+                    Item2tv2.setText(get(position).getContent());
+                }
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        System.out.println("点击");
+                    }
+                });
+            }
+        };
+        adapter.addAll(list);
+        recyclerView.setAdapter(adapter);*/
+    }
 
 
     @OnClick({R.id.make,R.id.next})
@@ -177,8 +216,6 @@ public class MainActivity extends BaseActivity<BaseBean>{
 
             }
         };*/
-        Log.e("sadasd","sdfffffffffffffffffffffffffffff");
-        Logger.i("有问题啊");
         Consumer<Scort> consumer=new Consumer<Scort>() {
             @Override
             public void accept(Scort scort) throws Exception {
@@ -192,6 +229,8 @@ public class MainActivity extends BaseActivity<BaseBean>{
                 return Flowable.fromIterable(student.getScorts());
             }
         }).subscribe(consumer);
+
+
         HttpManager.init(this).getMovie(0, 10, new BaseObserver<List<Subject>>(this) {
             @Override
             protected void onHandleSuccess(List<Subject> subjects) {
@@ -211,7 +250,7 @@ public class MainActivity extends BaseActivity<BaseBean>{
     }
 
     @Override
-    public void handleMessageThis(Message msg, int what) {
+    protected void handleMessageThis(Message msg, int what) {
         switch (what){
             case 0:
                 System.out.println("0000000+++++++++++++00000000000000000000000000");
@@ -223,5 +262,9 @@ public class MainActivity extends BaseActivity<BaseBean>{
                 System.out.println("222222222222222222222222222222222222222");
                 break;
         }
+    }
+
+    @Override
+    protected void onDataEvent(BaseEventBean<BaseBean> event) {
     }
 }

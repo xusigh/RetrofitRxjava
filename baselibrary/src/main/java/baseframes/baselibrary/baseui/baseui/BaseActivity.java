@@ -8,17 +8,22 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import baseframes.baselibrary.R;
+import baseframes.baselibrary.api.HttpManager;
 import baseframes.baselibrary.basebean.BaseEventBean;
 import baseframes.baselibrary.baseinterface.BaseEventEnter;
 import baseframes.baselibrary.baseui.baseannotation.CenterImag;
@@ -43,23 +48,32 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements View.
     private LinearLayout llCenter;
     private Toolbar toolbar;
     private Unbinder unbinder;
-    public static  BaseHandler baseHandler;
-    public Context context;
+    protected static BaseHandler baseHandler ;
+    protected Context bContext;
+    protected LayoutInflater bInflater;
+    protected View bContentView;
+    protected HttpManager bApi;
+    protected RequestManager bGlide;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LayoutId layoutId = getClass().getAnnotation(LayoutId.class);
-        if (layoutId != null && layoutId.value() != 0) {
-            setContentView(layoutId.value());
-        } else {
-            setContentView(contentLayoutId());
-        }
+
         baseHandler=new MyHandler(this) {
             @Override
             public void handleMessage(Message msg, int what) {
                 handleMessageThis(msg,what);
             }
         };
+        bContext=this;
+        bInflater=LayoutInflater.from(this);
+        bApi=HttpManager.init(this);
+        bGlide=Glide.with(this);
+        LayoutId layoutId = getClass().getAnnotation(LayoutId.class);
+        if (layoutId != null && layoutId.value() != 0) {
+            setContentView(layoutId.value());
+        } else {
+            setContentView(contentLayoutId());
+        }
     }
     public static abstract class MyHandler extends BaseHandler{
         public MyHandler(Activity activity) {
@@ -76,9 +90,12 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements View.
         }
     }
 
-    public  void handleMessageThis(Message msg, int what){};
+    protected   void handleMessageThis(Message msg, int what){};
     public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
+        if(layoutResID==0)return;
+        bContentView=bInflater.inflate(layoutResID,null);
+        if(bContentView==null)return;
+        super.setContentView(bContentView);
         registerEvent();
         //这里保存unbinder 千万别用Serializable的序列化
         unbinder=ButterKnife.bind(this);
@@ -152,10 +169,15 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements View.
 
     public abstract void initEvent();
 
-    public  int contentLayoutId(){return 0;}
+    protected  int contentLayoutId(){return 0;}
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDataSynEvent(BaseEventBean<T> event) {
+        onDataEvent(event);
+    }
+
+    protected void onDataEvent(BaseEventBean<T> event){
+
     }
     /**
      * 中间的点击事件

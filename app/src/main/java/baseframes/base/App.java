@@ -6,6 +6,7 @@ import android.util.Log;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
+import baseframes.baselibrary.baseui.baseui.UiReinstateActivityLifecycleCallback;
 import baseframes.baselibrary.crashlib.callback.ReinstateCallback;
 import baseframes.baselibrary.crashlib.rulers.Reinstate;
 
@@ -28,7 +29,7 @@ public class App extends Application {
         MyCrashHandler.register();
         //日志框架
         Logger.addLogAdapter(new AndroidLogAdapter());
-
+        registerActivityLifecycleCallbacks(new UiReinstateActivityLifecycleCallback());
 
     }
     static final class MyCrashCallback implements ReinstateCallback {
