@@ -20,4 +20,21 @@
         android:layout_height="wrap_content"
         android:text="next"
         android:id="@+id/next"/>
+<!--    <baseframes.base.viewtest.ScaleView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="#8a8a8a"
+        android:id="@+id/scalview"/>-->
+<!--    <baseframes.base.viewtest.PictureView
+        android:layout_width="match_parent"
+        android:id="@+id/pictrueView"
+        android:layout_height="500dp" />-->
+   <!-- <baseframes.base.viewtest.MyTextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/mytextview"/>-->
+    <baseframes.base.rxtext.LoadingView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/loadingView"/>
 </LinearLayout>

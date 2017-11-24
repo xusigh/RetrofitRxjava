@@ -2,10 +2,17 @@ package baseframes.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import baseframes.base.rxtext.LoadingView;
+import baseframes.base.viewtest.Bean;
 import baseframes.baselibrary.baseui.baseannotation.LayoutId;
 import baseframes.baselibrary.baseui.baseannotation.LeftText;
 import baseframes.baselibrary.baseui.baseannotation.RightText;
@@ -24,6 +31,30 @@ public class TestActivity1 extends AppCompatActivity implements UiActivityAnnita
     Button make;
     @BindView(R.id.next)
     Button next;
+//    @BindView(R.id.testView)
+//    TestView testView;
+/*    @BindView(R.id.scalview)
+    ScaleView s;*/
+  /*  @BindView(R.id.pictrueView)
+PictureView pictureView;*/
+  /*  @BindView(R.id.mytextview)
+    MyTextView myTextView;*/
+    private boolean play=false;
+    @BindView(R.id.loadingView)
+    LoadingView loadingView;
+    int progress=0;
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            progress++;
+            if(loadingView!=null) {
+                loadingView.setProgress(progress);
+                this.sendEmptyMessageDelayed(0, 100);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +63,7 @@ public class TestActivity1 extends AppCompatActivity implements UiActivityAnnita
     public void onClick(View view){
         switch (view.getId()){
             case R.id.make:
+//                pictureView.setStart(true);
                 System.out.println(1/0);
                 break;
             case R.id.next:
@@ -43,6 +75,15 @@ public class TestActivity1 extends AppCompatActivity implements UiActivityAnnita
     @Override
     public void initView(UiReinstateActivityLifecycleCallback callback) {
         callback.tvCenter.setText("哈哈哈 我改变了");
+        List<Bean> list=new ArrayList<>();
+        for (int i = 1; i <=7 ; i++) {
+            Bean b=new Bean();
+            b.setName("name"+i);
+            b.setValue(i*10);
+            list.add(b);
+        }
+//        testView.setData(list);
+        handler.sendEmptyMessageDelayed(0,1000);
     }
 
     @Override
