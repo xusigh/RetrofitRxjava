@@ -2,8 +2,6 @@ package baseframes.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -11,8 +9,11 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
-import baseframes.base.rxtext.LoadingView;
+import baseframes.base.rxtext.ClickDrawView;
+import baseframes.base.rxtext.KongTiaoView;
+import baseframes.base.rxtext.PathTestView;
 import baseframes.base.viewtest.Bean;
+import baseframes.base.viewtest.YaoKongQi;
 import baseframes.baselibrary.baseui.baseannotation.LayoutId;
 import baseframes.baselibrary.baseui.baseannotation.LeftText;
 import baseframes.baselibrary.baseui.baseannotation.RightText;
@@ -40,10 +41,10 @@ PictureView pictureView;*/
   /*  @BindView(R.id.mytextview)
     MyTextView myTextView;*/
     private boolean play=false;
-    @BindView(R.id.loadingView)
-    LoadingView loadingView;
+/*    @BindView(R.id.loadingView)
+    LoadingView loadingView;*/
     int progress=0;
-    private Handler handler=new Handler(){
+   /* private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -53,8 +54,15 @@ PictureView pictureView;*/
                 this.sendEmptyMessageDelayed(0, 100);
             }
         }
-    };
-
+    };*/
+    @BindView(R.id.pathview)
+    PathTestView pathview;
+    @BindView(R.id.yaokong)
+    YaoKongQi yaoKongQi;
+    @BindView(R.id.clickview)
+    ClickDrawView clickDrawView;
+    @BindView(R.id.kongtiao)
+    KongTiaoView kongTiaoView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +72,10 @@ PictureView pictureView;*/
         switch (view.getId()){
             case R.id.make:
 //                pictureView.setStart(true);
-                System.out.println(1/0);
+//                System.out.println(1/0);
+//                pathview.startAnimate2();
+//                pathview.startSearch();
+                pathview.startAnimate4();
                 break;
             case R.id.next:
                 startActivity(new Intent(this,TestActivity2.class));
@@ -83,7 +94,8 @@ PictureView pictureView;*/
             list.add(b);
         }
 //        testView.setData(list);
-        handler.sendEmptyMessageDelayed(0,1000);
+//        handler.sendEmptyMessageDelayed(0,1000);
+//        pathview.setData(new DataWang(20f,30f,40f,60f,10f,17.4f));
     }
 
     @Override
