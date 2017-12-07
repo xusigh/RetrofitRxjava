@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:background="#8a8a8a"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     tools:context="baseframes.base.TestActivity1">
     <include layout="@layout/basetoolbar_layout"></include>
     <ScrollView
         android:layout_width="match_parent"
+        android:clipChildren="false"
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
+            android:clipChildren="false"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="match_parent"
@@ -45,6 +48,22 @@
                    android:layout_width="match_parent"
                    android:layout_height="200dp"
                    android:id="@+id/loadingView"/>-->
+            <baseframes.base.rxtext.BubbleView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/bubbleview"/>
+            <baseframes.base.rxtext.Togglebutton
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/toggbut"/>
+            <baseframes.base.rxtext.SearchIcon
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:id="@+id/searchView"/>
+            <baseframes.base.rxtext.RippleView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:id="@+id/rippleview"/>
             <baseframes.base.rxtext.PathTestView
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
@@ -72,6 +91,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/kongtiao"
                 android:layout_height="300dp" />
+
         </LinearLayout>
     </ScrollView>
 
