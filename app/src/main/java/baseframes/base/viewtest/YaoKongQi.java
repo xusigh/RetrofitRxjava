@@ -102,7 +102,6 @@ public class YaoKongQi extends View {
         mMapMatrix.reset();
         // 获取测量矩阵(逆矩阵)
         if (mMapMatrix.isIdentity()) {
-            System.out.println("转换了");
             canvas.getMatrix().invert(mMapMatrix);
         }
 

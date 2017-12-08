@@ -48,6 +48,10 @@
                    android:layout_width="match_parent"
                    android:layout_height="200dp"
                    android:id="@+id/loadingView"/>-->
+            <baseframes.base.rxtext.ThumbView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/thumb"/>
             <baseframes.base.rxtext.BubbleView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"

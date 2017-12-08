@@ -1,5 +1,7 @@
 package baseframes.base;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,6 +16,8 @@ import baseframes.base.rxtext.KongTiaoView;
 import baseframes.base.rxtext.PathTestView;
 import baseframes.base.rxtext.RippleView;
 import baseframes.base.rxtext.SearchIcon;
+import baseframes.base.rxtext.ThumbView;
+import baseframes.base.rxtext.Togglebutton;
 import baseframes.base.viewtest.Bean;
 import baseframes.base.viewtest.YaoKongQi;
 import baseframes.baselibrary.baseui.baseannotation.LayoutId;
@@ -24,7 +28,6 @@ import baseframes.baselibrary.baseui.baseannotation.UiActivityAnnitation;
 import baseframes.baselibrary.baseui.baseui.UiReinstateActivityLifecycleCallback;
 import butterknife.BindView;
 import butterknife.OnClick;
-import baseframes.base.rxtext.Togglebutton;
 
 @LayoutId(R.layout.activity_test1)
 @TitleText("第二页")
@@ -74,6 +77,8 @@ PictureView pictureView;*/
     Togglebutton Togglebutton;
     @BindView(R.id.bubbleview)
     BubbleView bubbleView;
+    @BindView(R.id.thumb)
+    ThumbView thumbView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +116,13 @@ PictureView pictureView;*/
 //        testView.setData(list);
 //        handler.sendEmptyMessageDelayed(0,1000);
 //        pathview.setData(new DataWang(20f,30f,40f,60f,10f,17.4f));
+        test1();
+    }
+
+    private void test1() {
+        ObjectAnimator animator=ObjectAnimator.ofInt(next,"color", 0xffff0000, 0xff00ff00);
+        animator.setEvaluator(new ArgbEvaluator());
+        animator.start();
     }
 
     @Override
