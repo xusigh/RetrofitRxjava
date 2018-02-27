@@ -2,6 +2,7 @@ package baseframes.base;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -97,8 +98,8 @@ PictureView pictureView;*/
                 break;
 
             case R.id.next:
-                rippleView.stop();
-//                startActivity(new Intent(this,TestActivity2.class));
+//                rippleView.stop();
+                startActivity(new Intent(this,TestActivity2.class));
                 break;
         }
     }

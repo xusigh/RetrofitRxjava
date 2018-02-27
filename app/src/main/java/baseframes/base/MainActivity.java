@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity<BaseBean>{
         recyclerView.setAdapter(testadapter);
         /*EasyRecyclerAdapter<TestBean> adapter=new EasyRecyclerAdapter<TestBean>(this,R.layout.item1_layout) {
             @Override
-            public void onBind(BaseViewHolder holder, int position) {
+            public void onBind(BaseViewHolder2 holder, int position) {
                 TextView Item2tv1=holder.get(R.id.tv_1);
                 if(get(position).getName()!=null){
                     Item2tv1.setText(get(position).getName());

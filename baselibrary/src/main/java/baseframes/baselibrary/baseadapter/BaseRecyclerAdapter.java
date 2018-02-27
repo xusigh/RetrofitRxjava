@@ -13,7 +13,7 @@ import com.bumptech.glide.RequestManager;
  * 只负责业务层的adapter
  */
 
-public abstract class BaseRecyclerAdapter<E> extends BaseArrayRecyclerAdapter<E,BaseViewHolder> {
+public abstract class BaseRecyclerAdapter<E> extends BaseArrayRecyclerAdapter<E,BaseViewHolder2> {
     protected Context bContext;
     protected RequestManager bGlide;
     private boolean many;
@@ -24,13 +24,13 @@ public abstract class BaseRecyclerAdapter<E> extends BaseArrayRecyclerAdapter<E,
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder2 onCreateViewHolder(ViewGroup parent, int viewType) {
         View layout= LayoutInflater.from(bContext).inflate(getLayout(viewType),parent,false);
-        return  BaseViewHolder.getViewHolder(layout);
+        return  BaseViewHolder2.getViewHolder(layout);
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, final int position) {
+    public void onBindViewHolder(BaseViewHolder2 holder, final int position) {
         onBind(holder,position);
     }
 
@@ -47,7 +47,7 @@ public abstract class BaseRecyclerAdapter<E> extends BaseArrayRecyclerAdapter<E,
     //根据viewType来返回不同的布局，如果只有种，直接返回
     protected abstract int getLayout(int viewType);
 
-    public abstract void onBind(BaseViewHolder holder,int position);
+    public abstract void onBind(BaseViewHolder2 holder, int position);
     //多布局的type
     protected abstract int getType(int position);
 }

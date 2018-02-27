@@ -11,19 +11,19 @@ import android.widget.TextView;
  * Created by zhanghs on 2017/11/22/022.
  */
 
-public  class BaseViewHolder extends RecyclerView.ViewHolder{
+public  class BaseViewHolder2 extends RecyclerView.ViewHolder{
     private SparseArray<View> viewHolder;
     public View itemView;
 
-    public static BaseViewHolder getViewHolder(View view){
-        BaseViewHolder baseViewHolder= (BaseViewHolder) view.getTag();
-        if(baseViewHolder==null){
-            baseViewHolder=new BaseViewHolder(view);
-            view.setTag(baseViewHolder);
+    public static BaseViewHolder2 getViewHolder(View view){
+        BaseViewHolder2 baseViewHolder2 = (BaseViewHolder2) view.getTag();
+        if(baseViewHolder2 ==null){
+            baseViewHolder2 =new BaseViewHolder2(view);
+            view.setTag(baseViewHolder2);
         }
-        return baseViewHolder;
+        return baseViewHolder2;
     }
-    private BaseViewHolder(View itemView) {
+    private BaseViewHolder2(View itemView) {
         super(itemView);
         this.itemView=itemView;
         viewHolder=new SparseArray<>();

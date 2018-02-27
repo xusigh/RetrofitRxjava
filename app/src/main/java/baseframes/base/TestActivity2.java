@@ -1,5 +1,6 @@
 package baseframes.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,6 +24,7 @@ public class TestActivity2 extends AppCompatActivity implements UiActivityAnnita
     Button make;
     @BindView(R.id.next)
     Button next;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,8 @@ public class TestActivity2 extends AppCompatActivity implements UiActivityAnnita
             case R.id.make:
                 System.out.println(1/0);
                 break;
+            case R.id.next:
+                startActivity(new Intent(this,TestActivity3.class));
         }
     }
 

@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import baseframes.base.rxtext.TestBean;
 import baseframes.baselibrary.baseadapter.BaseRecyclerAdapter;
-import baseframes.baselibrary.baseadapter.BaseViewHolder;
+import baseframes.baselibrary.baseadapter.BaseViewHolder2;
 
 /**
  * Created by zhanghs on 2017/11/22/022.
@@ -28,7 +28,7 @@ public class TestAdapter extends BaseRecyclerAdapter<TestBean> {
     }
 
     @Override
-    public void onBind(BaseViewHolder holder, int position) {
+    public void onBind(BaseViewHolder2 holder, int position) {
         switch (getType(position)){
             case 0:
                 TextView Item1tv1=holder.get(R.id.tv_1);

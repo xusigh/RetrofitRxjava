@@ -50,6 +50,7 @@ public class UiReinstateActivityLifecycleCallback implements Application.Activit
         if (activity instanceof UiActivityAnnitation) {
             LayoutId layoutId = (LayoutId) mClass.getAnnotation(LayoutId.class);
             if (layoutId != null && layoutId.value() != 0) {
+//                activity.getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
                 activity.setContentView(layoutId.value());
             }
             unbinder = ButterKnife.bind(activity);
